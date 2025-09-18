@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv
+venv/
+pip-wheel-metadata/
+
+# Node
+node_modules/
+dist/
+.npm
+npm-debug.log*
+
+# Secrets
+.env
+*.env
+
+# IDE & OS files
+.vscode/
+.DS_Store
