@@ -1,127 +1,201 @@
 # Pathfinder AI 🗺️
-A personalized, AI-powered learning navigator designed to create dynamic quizzes, analyze results, and generate custom study plans.
 
-Pathfinder AI is a full-stack web application built for a hackathon to solve a common problem for students: inefficient studying. Instead of a one-size-fits-all approach, Pathfinder assesses a user's knowledge on any topic, identifies their specific weaknesses, and provides an actionable, AI-generated study plan to help them master the subject.
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Groq](https://img.shields.io/badge/Groq_AI-F05032?style=for-the-badge&logo=groq&logoColor=white)](https://groq.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-✨ Core Features
-For Users:
-Dynamic Quiz Generation: Enter any topic and receive a unique, 10-question quiz with varied difficulty levels (easy, medium, hard, and extreme).
+> **A personalized, AI-powered learning navigator designed to generate dynamic quizzes, analyze student performance, and create actionable 4-day study plans.**
 
-Personalized Study Plans: Based on incorrect answers, the AI generates a custom study plan with targeted concepts, resource links, and practice tasks.
+---
 
-AI-Powered Explanations: Get instant, simple explanations for any quiz question you answered incorrectly.
+## 📌 Overview
 
-Conversational AI Tutor: Ask follow-up questions and get answers from an AI tutor within the context of your study plan.
+**Pathfinder AI** transforms standard studying into an adaptive, feedback-driven experience. Instead of static, static learning paths, Pathfinder assesses a student's knowledge on **any topic**, pinpoints specific weak areas, and leverages high-speed LLMs (via Groq) to generate targeted study plans, beginner-friendly question explanations, and an interactive AI tutor.
 
-Secure Authentication: Full user registration and login system with persistent sessions.
+---
 
-Comprehensive Quiz History: Review every quiz you've taken, see your scores, and expand each result to view the full quiz and study plan.
+## ✨ Core Features
 
-Gamification: Earn points for correct answers and build a daily learning streak to stay motivated.
+### 🎓 For Students
+- 🎯 **Dynamic Quiz Generation**: Enter any subject or topic to generate a unique 10-question multiple-choice quiz (3 Easy, 3 Medium, 3 Hard, 1 Extreme Hard).
+- 📅 **Personalized 4-Day Study Plans**: Based on missed questions, Pathfinder builds a structured Markdown plan with core concepts, focus areas, practice tasks, and resource links.
+- 💡 **On-Demand Explanations**: Click *"Explain this"* on any missed question in your quiz history for a beginner-friendly explanation.
+- 🤖 **Interactive AI Tutor**: Ask follow-up questions to an embedded AI tutor within the context of your current study topic.
+- 🏆 **Gamification & Analytics**: Earn points (10 pts/correct answer), build daily learning streaks, and track performance history via interactive Recharts graphs.
+- 🔐 **Secure Authentication**: Full JWT-based authentication with persistent sessions and bcrypt password hashing.
 
-User Profile: Track your total points, current streak, and visualize your recent performance on a personal dashboard.
+### 🛡️ For Admins
+- 📊 **Platform Activity Dashboard**: Role-protected page displaying registered users, user roles, and system-wide quiz results.
+- 👥 **User Management**: Monitor platform adoption and user engagement metrics.
 
-For Admins:
-Admin Dashboard: A secure, role-protected page to view all platform activity.
+---
 
-User Management: See a list of all registered users and their roles.
+## 🏗️ Architecture & Technology Stack
 
-Platform-Wide Results: View a complete history of every quiz taken by all users on the platform.
+```mermaid
+graph TD
+    User([User Browser]) -->|React 18 + Vite| Frontend[Nginx / Vite Web Client]
+    Frontend -->|REST API + JWT Bearer| Backend[FastAPI Backend - Port 8001]
+    Backend -->|Async ODM / Motor| Database[(MongoDB Database)]
+    Backend -->|Async Chat Completions| Groq[Groq API - groq/compound]
+```
 
-🛠️ Tech Stack
-Backend
-Framework: Python, FastAPI
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Backend** | Python 3.11, FastAPI | Asynchronous REST backend engine |
+| **AI LLM Engine** | Groq API (`groq/compound`) | High-speed LLM completion engine |
+| **Database** | MongoDB & Motor | Asynchronous MongoDB driver & object management |
+| **Authentication** | JWT (`python-jose`) & `bcrypt` | Secure token generation & salted password hashing |
+| **Rate Limiting** | `slowapi` | Prevents API abuse & enforces per-IP request limits |
+| **Frontend** | React 18, Vite, React Router | Fast, modern client SPA |
+| **UI & Visuals** | Custom CSS, Canvas Constellation | Dark theme UI with dynamic background animation |
+| **Data Viz** | Recharts | Performance analytics & history visualization |
+| **Containerization** | Docker & Docker Compose | Container orchestration for MongoDB, API, and Nginx |
+| **CI/CD** | GitHub Actions Workflow | Automated backend syntax linting and Vite frontend build |
 
-Database: MongoDB (managed with MongoDB Compass)
+---
 
-AI: Google Gemini API
+## ⚡ Quickstart Guide
 
-Authentication: JWT (JSON Web Tokens), passlib for hashing
+### Option 1: One-Command Setup with Docker Compose 🐳
 
-Driver: Motor (Asynchronous MongoDB driver)
+Ensure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
 
-Frontend
-Framework: React (using Vite)
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/guruvishnu0501/PathFinder.ai.git
+   cd PathFinder.ai
+   ```
 
-Routing: React Router
+2. **Configure Environment Variables**:
+   Create a `.env` file inside the `backend/` directory:
+   ```env
+   GROQ_API_KEY="your_groq_api_key_here"
+   MONGO_URI="mongodb://mongodb:27017/"
+   SECRET_KEY="generate_a_strong_random_secret_key"
+   ```
 
-API Calls: Axios
+3. **Build & Start Services**:
+   ```bash
+   docker-compose up --build
+   ```
 
-UI/Styling: Custom CSS with a professional dark theme and animated background
+4. **Access the Application**:
+   - **Frontend**: [http://localhost:5173](http://localhost:5173)
+   - **Backend API**: [http://localhost:8001](http://localhost:8001)
+   - **Swagger Docs**: [http://localhost:8001/docs](http://localhost:8001/docs)
 
-Charting: Recharts
+---
 
-🚀 Getting Started
-Prerequisites
-Python 3.8+
+### Option 2: Manual Local Development Setup 🛠️
 
-Node.js and npm
+#### Prerequisites
+- **Python**: 3.11+
+- **Node.js**: v18+ / v20+
+- **MongoDB**: Community Server running locally on `mongodb://localhost:27017`
 
-MongoDB Community Server installed and running locally
+#### 1. Backend Setup
+```bash
+cd backend
 
-Installation & Setup
-Clone the repository:
-
-git clone [https://github.com/your-username/pathfinder-ai.git](https://github.com/your-username/pathfinder-ai.git)
-cd pathfinder-ai
-
-Backend Setup:
-
-Navigate to the backend folder: cd backend
-
-Create and activate a virtual environment:
-
+# Create and activate virtual environment
 python -m venv venv
+
 # On Windows:
 .\venv\Scripts\activate
 # On Mac/Linux:
 source venv/bin/activate
 
-Install dependencies: pip install -r requirements.txt
+# Install dependencies
+pip install -r requirements.txt
 
-Create a .env file in the backend directory and add your keys:
+# Create .env file
+cp .env.example .env
+```
 
-API_KEY="your_google_ai_api_key"
-MONGO_URI="mongodb://localhost:27017"
-SECRET_KEY="generate_a_strong_random_secret_key"
+Edit `backend/.env` with your credentials:
+```env
+GROQ_API_KEY="your_groq_api_key_here"
+MONGO_URI="mongodb://localhost:27017/"
+SECRET_KEY="your_secure_secret_key"
+```
 
-Frontend Setup:
+Start the FastAPI server:
+```bash
+uvicorn main:app --port 8001 --reload
+```
 
-Navigate to the frontend folder: cd ../frontend
+#### 2. Frontend Setup
+In a second terminal:
+```bash
+cd frontend
 
-Install dependencies: npm install
+# Install Node dependencies
+npm install
 
-Running the Application
-Start the Backend Server:
-
-In a terminal (in the backend folder with venv active):
-
-uvicorn main:app --reload
-
-The server will be running at http://localhost:8000.
-
-Start the Frontend Client:
-
-In a second terminal (in the frontend folder):
-
+# Start Vite dev server
 npm run dev
+```
 
-The application will be accessible at http://localhost:5173.
+The application will be live at [http://localhost:5173](http://localhost:5173).
 
-Creating an Admin User
-Sign up for a new account through the web interface.
+---
 
-Open MongoDB Compass and connect to your local database.
+## 🔑 Environment Variables Reference
 
-Navigate to the pathfinder_db database and open the users collection.
+| Variable | Required | Description | Example |
+| :--- | :---: | :--- | :--- |
+| `GROQ_API_KEY` | **Yes** | Groq API key from [console.groq.com](https://console.groq.com) | `gsk_...` |
+| `MONGO_URI` | **Yes** | MongoDB connection URI | `mongodb://localhost:27017/` |
+| `SECRET_KEY` | **Yes** | Cryptographic secret key for signing JWT tokens | `2c0cb51fbf5...` |
 
-Find the user you just created, click the "edit" icon, and add a new field:
+---
 
-Field Name: role
+## 📡 API Endpoint Reference
 
-Field Value: admin
+| Method | Endpoint | Access | Description |
+| :---: | :--- | :---: | :--- |
+| `POST` | `/signup` | Public | Register a new user account |
+| `POST` | `/token` | Public | Authenticate user & return JWT Bearer token |
+| `GET` | `/profile` | User | Fetch current user stats (points, streak) |
+| `POST` | `/generate-quiz` | User | Generate 10-question quiz on a given topic |
+| `POST` | `/generate-plan` | User | Generate 4-day study plan from missed questions |
+| `POST` | `/explain-question` | User | Get beginner-friendly explanation for a question |
+| `POST` | `/ask-follow-up` | User | Send question to AI tutor chatbot |
+| `POST` | `/save-result` | User | Save completed quiz results & update streak |
+| `GET` | `/history` | User | Get user's quiz attempt history |
+| `GET` | `/admin/users` | Admin | Retrieve list of all platform users |
+| `GET` | `/admin/results` | Admin | Retrieve all platform quiz submissions |
 
-Save the document. The next time this user logs in, they will have access to the "Admin" dashboard.
+---
 
-📄 License
-This project is licensed under the MIT License.
+## 👑 Creating an Admin User
+
+1. Register a new account through the web UI ([http://localhost:5173/signup](http://localhost:5173/signup)).
+2. Open **MongoDB Compass** (or `mongosh`) and connect to `mongodb://localhost:27017`.
+3. Open the `pathfinder_db` database and select the `users` collection.
+4. Locate your user document and update the `role` field from `"user"` to `"admin"`:
+   ```json
+   {
+     "role": "admin"
+   }
+   ```
+5. Log in again to access the **Admin Dashboard** at `/admin`.
+
+---
+
+## 🧪 Running CI Checks
+
+The repository includes GitHub Actions CI workflows for automated linting and build validation.
+
+- **Backend Syntax Check**: `flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics`
+- **Frontend Build Verification**: `npm run build`
+
+---
+
+## 📄 License
+
+This project is open-source and licensed under the **[MIT License](LICENSE)**.
