@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: pathfinder_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - pathfinder_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pathfinder_backend
+    ports:
+      - "8001:8000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - SECRET_KEY=2c0cb51fbf527179f95f30a0dd4225e7e9cfbf261dbcbdf7819d744f01b5c8d1
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    depends_on:
+      - mongodb
+    networks:
+      - pathfinder_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pathfinder_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - pathfinder_net
+
+volumes:
+  mongo_data:
+
+networks:
+  pathfinder_net:
+    driver: bridge
