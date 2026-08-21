@@ -196,6 +196,15 @@ The repository includes GitHub Actions CI workflows for automated linting and bu
 
 ---
 
+## 🤝 Contributing & Contributors
+
+Contributions, issues, and feature requests are welcome! Feel free to check out [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+### Lead Maintainer & Author
+- **[@guruvishnu0501](https://github.com/guruvishnu0501)** — *Project Creator & Lead Architect*
+
+---
+
 ## 📄 License
 
 This project is open-source and licensed under the **[MIT License](LICENSE)**.
