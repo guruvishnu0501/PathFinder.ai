@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
+import { API_BASE_URL } from './apiConfig';
 import SkeletonLoader from './SkeletonLoader';
 import './App.css';
 
@@ -19,8 +20,8 @@ function AdminDashboard() {
       try {
         const config = { headers: { Authorization: `Bearer ${token}` } };
         const [usersResponse, resultsResponse] = await Promise.all([
-          axios.get('http://localhost:8001/admin/users', config),
-          axios.get('http://localhost:8001/admin/results', config)
+          axios.get(`${API_BASE_URL}/admin/users`, config),
+          axios.get(`${API_BASE_URL}/admin/results`, config)
         ]);
         setUsers(usersResponse.data);
         setResults(resultsResponse.data);

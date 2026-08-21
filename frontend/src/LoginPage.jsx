@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 import axios from 'axios';
+import { API_BASE_URL } from './apiConfig';
 import './App.css';
 
 function LoginPage() {
@@ -19,7 +20,7 @@ function LoginPage() {
       const formData = new URLSearchParams();
       formData.append('username', email);
       formData.append('password', password);
-      const response = await axios.post('http://localhost:8001/token', formData, {
+      const response = await axios.post(`${API_BASE_URL}/token`, formData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
       if (response.data.access_token) {

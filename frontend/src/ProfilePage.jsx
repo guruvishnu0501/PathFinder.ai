@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
+import { API_BASE_URL } from './apiConfig';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import SkeletonLoader from './SkeletonLoader';
 import './App.css';
@@ -24,8 +25,8 @@ function ProfilePage() {
         const config = { headers: { Authorization: `Bearer ${token}` } };
         // Fetch profile and history data concurrently
         const [profileResponse, historyResponse] = await Promise.all([
-          axios.get('http://localhost:8001/profile', config),
-          axios.get('http://localhost:8001/history', config)
+          axios.get(`${API_BASE_URL}/profile`, config),
+          axios.get(`${API_BASE_URL}/history`, config)
         ]);
         setProfile(profileResponse.data);
         // We only need the last 10 quizzes for the chart

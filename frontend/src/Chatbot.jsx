@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
+import { API_BASE_URL } from './apiConfig';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './App.css';
@@ -32,7 +33,7 @@ function Chatbot({ topic }) {
 
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.post('http://localhost:8001/ask-follow-up', {
+      const response = await axios.post(`${API_BASE_URL}/ask-follow-up`, {
         topic: topic,
         question: input
       }, config);

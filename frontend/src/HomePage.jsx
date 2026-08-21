@@ -3,6 +3,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { AuthContext } from './AuthContext';
+import { API_BASE_URL } from './apiConfig';
 import Chatbot from './Chatbot';
 import './App.css';
 
@@ -70,7 +71,7 @@ function HomePage() {
         setScore(null);
         try {
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const response = await axios.post('http://localhost:8001/generate-quiz', { topic }, config);
+            const response = await axios.post(`${API_BASE_URL}/generate-quiz`, { topic }, config);
             setQuiz(response.data.quiz);
         } catch (err) {
             setError('Failed to generate quiz. Please try again.');
@@ -98,17 +99,17 @@ function HomePage() {
             setLoading(true);
             setError(null);
             try {
-                const planResponse = await axios.post('http://localhost:8001/generate-plan', { topic, quizData: resultData.quizData }, config);
+                const planResponse = await axios.post(`${API_BASE_URL}/generate-plan`, { topic, quizData: resultData.quizData }, config);
                 const newStudyPlan = planResponse.data.plan;
                 setStudyPlan(newStudyPlan);
-                await axios.post('http://localhost:8001/save-result', { ...resultData, studyPlan: newStudyPlan }, config);
+                await axios.post(`${API_BASE_URL}/save-result`, { ...resultData, studyPlan: newStudyPlan }, config);
             } catch (err) {
                 setError('Failed to generate study plan.');
             } finally {
                 setLoading(false);
             }
         } else {
-            await axios.post('http://localhost:8001/save-result', resultData, config);
+            await axios.post(`${API_BASE_URL}/save-result`, resultData, config);
         }
     };
     

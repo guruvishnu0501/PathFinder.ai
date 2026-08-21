@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
+import { API_BASE_URL } from './apiConfig';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import SkeletonLoader from './SkeletonLoader';
@@ -21,7 +22,7 @@ function QuestionReviewItem({ question, index }) {
     setIsLoadingExplanation(true);
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.post('http://localhost:8001/explain-question', {
+      const response = await axios.post(`${API_BASE_URL}/explain-question`, {
         question: question.question,
         answer: question.answer
       }, config);
@@ -113,7 +114,7 @@ function HistoryPage() {
             setLoading(true);
             try {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
-                const response = await axios.get('http://localhost:8001/history', config);
+                const response = await axios.get(`${API_BASE_URL}/history`, config);
                 setHistory(response.data);
             } catch (err) {
                 setError('Failed to load quiz history.');

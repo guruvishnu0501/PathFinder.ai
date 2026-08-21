@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from './apiConfig';
 import './App.css';
 
 function SignupPage() {
@@ -14,7 +15,7 @@ function SignupPage() {
     e.preventDefault();
     setError('');
     try {
-        await axios.post('http://localhost:8001/signup', { email, password });
+        await axios.post(`${API_BASE_URL}/signup`, { email, password });
         navigate('/login'); 
     } catch (err) {
         setError(err.response?.data?.detail || 'Signup failed. Please try again.');
